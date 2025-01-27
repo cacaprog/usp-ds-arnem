@@ -11,6 +11,9 @@ matplotlib = "*"
 numpy = "*"
 ipykernel = "*"
 pyarrow = "*"
+graphviz = "*"
+patsy = "*"
+tqdm = "*"
 
 [dev-packages]
 
