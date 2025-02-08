@@ -129,5 +129,3 @@ Advantages over single train-test split:
 **Tarefas para fazer até próxima aula**
 - tips
 - registros no mobile
-
-
