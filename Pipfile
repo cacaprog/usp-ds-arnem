@@ -17,6 +17,9 @@ tqdm = "*"
 lightgbm = "*"
 xgboost = "==2.1.3"
 shap = "*"
+tensorflow = "*"
+keras = "*"
+scikit-optimize = "*"
 
 [dev-packages]
 

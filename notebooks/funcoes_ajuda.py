@@ -36,7 +36,7 @@ def descritiva(df_, var, vresp='survived', max_classes=5):
     
     # Criar o segundo eixo y para a taxa de sobreviventes
     ax2 = ax1.twinx()
-    sns.countplot(data=df, x=var, palette='viridis', alpha=0.5, ax=ax2)
+    sns.countplot(data=df, x=var, hue=var, legend=False, palette='viridis', alpha=0.5, ax=ax2)
     ax2.set_ylabel('Frequência', color='blue')
     ax2.tick_params(axis='y', labelcolor='blue')
     
@@ -97,3 +97,36 @@ def relatorio_missing(df):
     print(f'Número de linhas: {df.shape[0]} | Número de colunas: {df.shape[1]}')
     return pd.DataFrame({'Pct_missing': df.isna().mean().apply(lambda x: f"{x:.1%}"),
                           'Freq_missing': df.isna().sum().apply(lambda x: f"{x:,.0f}").replace(',','.')})
+
+
+def diagnóstico(df_, var, vresp='survived', pred = 'pred', max_classes=5):
+    """
+    Gera um gráfico descritivo da taxa de sobreviventes por categoria da variável especificada.
+    
+    Parâmetros:
+    df : DataFrame - Base de dados a ser analisada.
+    var : str - Nome da variável categórica a ser analisada.
+    """
+    
+    df = df_.copy()
+    
+    df[var+'_'] = df[var]
+    if df[var+'_'].nunique()>max_classes:
+        df[var+'_'] = pd.qcut(df[var], max_classes, duplicates='drop')
+    
+    fig, ax1 = plt.subplots(figsize=(10, 6))
+    
+    sns.pointplot(data=df, y=vresp, x=var+'_', ax=ax1)
+    sns.pointplot(data=df, y=pred, x=var+'_', ax=ax1, color='red', linestyles='--', errorbar=None)
+    
+    # Criar o segundo eixo y para a taxa de sobreviventes
+    ax2 = ax1.twinx()
+    sns.countplot(data=df, x=var+'_', hue=var+'_', palette='viridis', alpha=0.5, ax=ax2)
+    ax2.set_ylabel('Frequência', color='blue')
+    ax2.tick_params(axis='y', labelcolor='blue')
+    
+    ax1.set_zorder(2)
+    ax1.patch.set_visible(False)  # Tornar o fundo do eixo 1 transparente
+    
+    # Exibir o gráfico
+    plt.show()
